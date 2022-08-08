@@ -10,9 +10,30 @@ import pickle
 import imageio
 import matplotlib.pyplot as plt
 
+def destroy_train_test():
+    #imgs_id_test.npy
+    #imgs_mask_trainPath.npy
+    #imgs_test.npy
+    #imgs_trainPath.npy
+    msg = ""
+    if os.path.exists("imgs_id_test.npy"):
+        os.remove("imgs_id_test.npy")
+        msg+="rm imgs_id_test.npy "
+    if os.path.exists("imgs_mask_trainPath.npy"):
+        os.remove("imgs_mask_trainPath.npy")
+        msg+="imgs_mask_trainPath.npy "
+    if os.path.exists("imgs_test.npy"):
+        os.remove("imgs_test.npy")
+        msg+="imgs_test.npy "
+    if os.path.exists("imgs_trainPath.npy"):
+        os.remove("imgs_trainPath.npy")
+        msg+="imgs_trainPath.npy "
+    return msg
+
+
 #Prepare training and test set
 def create_train_data(netparms):
-    data_path=netparms.data_path
+    data_path=netparms.data_path #"/home/student/Documents/GitHub/StreoScenNet-fork/Datasets/dV/Needle_Passing",
     filenames_img = []
     filenames_mask = []
     # train_data_path = os.path.join(data_path, 'train')
@@ -27,23 +48,26 @@ def create_train_data(netparms):
 
     #pdb.set_trace()
     images = os.listdir(data_path)
-    print("images:",images)
+    print("create_train_data -> images:", str(images[0]) +"..."+str(images[-1]) )
     total =sum(len(os.listdir(os.path.join(y,'ground_truth'))) for y in (Gpaths))
+    print("There will be " + str(total)+" images in the final train set")
     i = 0
     print('-'*30)
     print('Creating trainig images...')
     print('-'*30)
     img_mask=[]
+    print("len(images)",len(images))
     for video_number in range(len(images)):
+        print("create_train_data -> for each images -> loop ",os.path.join(Gpaths[video_number],'ground_truth'))
         for image_gt_name in os.listdir(os.path.join(Gpaths[video_number],'ground_truth')):
             #pdb.set_trace()
 
             name_gt=os.path.join(Gpaths[video_number],'ground_truth', image_gt_name)
-            print("name_gt",name_gt)
+            #print("name_gt",name_gt)
             name_left=os.path.join(Gpaths[video_number],'left_frames', os.path.splitext(image_gt_name)[0]+'.png') # from jpg
-            print("name_left",name_left)
+            #print("name_left",name_left)
             name_right=os.path.join(Gpaths[video_number],'right_frames', os.path.splitext(image_gt_name)[0]+'.png') # from jpg
-            print("name_right",name_right)
+            #print("name_right",name_right)
 
             #img_gt = imread(name_gt)
             #img_left= imread(name_left)
@@ -85,21 +109,25 @@ def create_test_data(netparams):
     Gpaths=[os.path.join(data_path_test,x) for x in Gpaths]
 
     images = os.listdir(data_path_test)
+    print("create_train_data -> images:", str(images[0]) +"..."+str(images[-1]) )
     total =sum(len(os.listdir(os.path.join(y,'left_frames'))) for y in (Gpaths))
+
+    print("There will be " + str(total)+" images in the final test set")
     i = 0
     print('-'*30)
     print('Creating trainig images...')
     print('-'*30)
     img_mask=[]
     for video_number in range(len(images)):
+        print("create_train_data -> for each images -> loop ",os.path.join(Gpaths[video_number],'ground_truth'))
         for image_gt_name in os.listdir(os.path.join(Gpaths[video_number],'ground_truth')):
             #pdb.set_trace()
             name_gt=os.path.join(Gpaths[video_number],'ground_truth', image_gt_name)
-            print("name_gt",name_gt)
+            #print("name_gt",name_gt)
             name_left=os.path.join(Gpaths[video_number],'left_frames', os.path.splitext(image_gt_name)[0]+'.png') # from jpg
-            print("name_left",name_left)
+            #print("name_left",name_left)
             name_right=os.path.join(Gpaths[video_number],'right_frames', os.path.splitext(image_gt_name)[0]+'.png') # from jpg
-            print("name_right",name_right)
+            #print("name_right",name_right)
             
             '''
             img_gt = imread(name_gt)

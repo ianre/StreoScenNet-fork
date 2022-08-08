@@ -4,7 +4,7 @@
   "network":"MulResNet",
   "task":"all",
   "loss":"CE",
-  "lr": 0.0001,
+  "learning_rate": 0.0001,
   "optimizer": "adam",
   "batch_size": 10,
   "epoch_size": 1,
@@ -23,7 +23,7 @@
   "save_images": true,
   "include_top": false,
   "weights": "imagenet",
-  "data_path":"C:/Users/ianre/Desktop/coda/streoscene/Datasets/dV/Needle_Passing",
-  "data_path_test": "C:/Users/ianre/Desktop/coda/streoscene/Datasets/dV/Needle_Passing"
+  "data_path":"/home/student/Documents/GitHub/StreoScenNet-fork/Datasets/dV/Needle_Passing_train",
+  "data_path_test": "/home/student/Documents/GitHub/StreoScenNet-fork/Datasets/dV/Needle_Passing_test"
 
 }

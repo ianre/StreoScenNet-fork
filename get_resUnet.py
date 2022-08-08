@@ -92,11 +92,11 @@ class CustomRMSprop(Optimizer):
         - [rmsprop: Divide the gradient by a running average of its recent magnitude](http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf)
     """
 
-    def __init__(self, lr=0.001, rho=0.9, epsilon=None, decay=0.,multipliers=None,
+    def __init__(self, learning_rate=0.001, rho=0.9, epsilon=None, decay=0.,multipliers=None,
                  **kwargs):
         super(CustomRMSprop, self).__init__(**kwargs)
         with K.name_scope(self.__class__.__name__):
-            self.lr = K.variable(lr, name='lr')
+            self.learning_rate = K.variable(learning_rate, name='learning_rate')
             self.rho = K.variable(rho, name='rho')
             self.decay = K.variable(decay, name='decay')
             self.iterations = K.variable(0, dtype='int64', name='iterations')
@@ -113,17 +113,17 @@ class CustomRMSprop(Optimizer):
         self.weights = accumulators
         self.updates = [K.update_add(self.iterations, 1)]
 
-        lr = self.lr
+        learning_rate = self.learning_rate
         if self.initial_decay > 0:
-            lr *= (1. / (1. + self.decay * K.cast(self.iterations,
+            learning_rate *= (1. / (1. + self.decay * K.cast(self.iterations,
                                                   K.dtype(self.decay))))
 
         for p, g, a in zip(params, grads, accumulators):
             # update accumulator
             if p.name in self.lr_multipliers:
-                new_lr = lr * self.lr_multipliers[p.name]
+                new_lr = learning_rate * self.lr_multipliers[p.name]
             else:
-                new_lr = lr                 
+                new_lr = learning_rate                 
             new_a = self.rho * a + (1. - self.rho) * K.square(g)
             self.updates.append(K.update(a, new_a))
             new_p = p - new_lr * g / (K.sqrt(new_a) + self.epsilon)
@@ -136,7 +136,7 @@ class CustomRMSprop(Optimizer):
         return self.updates
 
     def get_config(self):
-        config = {'lr': float(K.get_value(self.lr)),
+        config = {'learning_rate': float(K.get_value(self.learning_rate)),
                   'rho': float(K.get_value(self.rho)),
                   'decay': float(K.get_value(self.decay)),
                   'epsilon': self.epsilon}
@@ -488,7 +488,7 @@ def YnetResNet(netpram,include_top=True, weights=None, input_tensor=None,  input
     model = Model(inputs=[inputs_L,inputs_R], outputs=classify,name='RESNetU')
    # optimizerc =CustomRMSprop(lr=0.00001,multipliers = LR_mult_dict)
     #lr=0.00001, F1=79.8
-    model.compile(optimizer=RMSprop(lr=0.0001), loss=bce_dice_loss, metrics=[dice_coeff])
+    model.compile(optimizer=RMSprop(learning_rate=0.0001), loss=bce_dice_loss, metrics=[dice_coeff])
    # '''
     return model
     

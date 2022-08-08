@@ -2,3 +2,7 @@ YnetResNet2017_all_v67logs
 __pycache__
 win-env/
 py-env/
+Datasets (copy)/
+.vscode/
+YnetResNet2017_all_v67_hist
+YnetResNet2017_all_v67.hdf5

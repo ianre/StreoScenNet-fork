@@ -6,7 +6,7 @@ Params = namedtuple("Config", [
   'network',
   'task',
   'loss',
-  'lr',
+  'learning_rate',
   'optimizer',
   'batch_size',
   'epoch_size',

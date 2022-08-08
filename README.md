@@ -38,3 +38,6 @@ pages={109510P},
 year={2019},
 organization={International Society for Optics and Photonics}
 }
+
+# Removed 
+pywin32==304
